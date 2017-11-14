@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Terminal</title>
+  <link rel="stylesheet" media="all" href="../dist/terminal.css">
+  <script src="../dist/terminal.js"></script>
+  <style>
+    #terminal * {
+      font-size: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="terminal"></div>
+  <script>
+    var container = document.getElementById('terminal');
+    var term = new terminal.Terminal(container, cmds, {
+      welcome: 'Hi! :D',
+      prompt: '',
+      separator: '$',
+      theme: 'dark'
+    });
+
+    function cmds(cmd, args, stream) {
+      if (cmd === 'test') {
+        stream.write('succeed');
+        stream.close();
+      } else if (cmd === 'clear') {
+        term.clear();
+      } else {
+        stream.write(cmd + ' : Command Not Found');
+        stream.close();
+      }
+    }
+  </script>
+</body>
+
+</html>

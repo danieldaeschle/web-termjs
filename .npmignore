@@ -1,0 +1,9 @@
+.*
+**/tsconfig.json
+**/webpack.config.js
+**/packages-lock.json
+**/tslint.json
+
+src
+node_modules
+example
