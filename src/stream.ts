@@ -1,11 +1,13 @@
 export class Stream {
-    private closed: boolean = false;
+    private closed = false;
     private _write: (html: string) => any;
     private _close: () => any;
 
     write(html: string) {
-        if (this.closed) return;
-        this._write(html)
+        if (this.closed) {
+            return;
+        }
+        this._write(html);
     }
 
     close() {

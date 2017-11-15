@@ -2,21 +2,19 @@ import { Options } from './options';
 import { Stream } from './stream';
 
 export class Terminal {
+  container: HTMLElement;
   private history: any[];
   private histpos: number;
   private histtemp = '';
-
+  private exec: (cmd: string, args: string[], stream: Stream) => any;
   private termContainer: HTMLElement;
   private inputLine: HTMLElement;
   private cmdLine: any;
   private output: HTMLElement;
-  private prompt: HTMLElement;
+  private _prompt: HTMLElement;
   private background: HTMLElement;
 
-  constructor(
-    private container: HTMLElement,
-    private exec: (cmd: string, args: string[], stream: Stream) => any,
-    private options: Options = {
+  constructor(private options: Options = {
       welcome: '',
       prompt: '',
       separator: '$',
@@ -24,8 +22,6 @@ export class Terminal {
   }) {
     this.history = window.localStorage.getItem('history') ? JSON.parse(window.localStorage.getItem('history')) : [];
     this.histpos = this.history.length;
-
-    this.setupTerminal();
   }
 
   private setupTerminal() {
@@ -53,7 +49,7 @@ export class Terminal {
     this.inputLine = this.termContainer.querySelector('.input-line') as HTMLElement;
     this.cmdLine = this.termContainer.querySelector('.input-line .cmdline') as HTMLElement;
     this.output = this.termContainer.querySelector('output') as HTMLElement;
-    this.prompt = this.termContainer.querySelector('.prompt') as HTMLElement;
+    this._prompt = this.termContainer.querySelector('.prompt') as HTMLElement;
     this.background = document.querySelector('.background') as HTMLElement;
 
     this.output.addEventListener('DOMSubtreeModified', (e) => {
@@ -85,11 +81,11 @@ export class Terminal {
     }, false);
 
     this.cmdLine.addEventListener('keyup', function(e) {
-      terminal.historyHandler(e, this)
+      terminal.historyHandler(e, this);
     }, false);
 
     this.cmdLine.addEventListener('keydown', function(e) {
-      terminal.processNewCommand(terminal, e, this)
+      terminal.processNewCommand(terminal, e, this);
     }, false);
 
     window.addEventListener('keyup', (e) => {
@@ -101,7 +97,9 @@ export class Terminal {
 
   private processNewCommand(self: Terminal, e: any, node: any) {
     // Only handle the Enter key.
-    if (e.keyCode !== 13) return;
+    if (e.keyCode !== 13) {
+      return;
+    }
 
     const cmdline = node.value;
 
@@ -114,7 +112,7 @@ export class Terminal {
 
     // Duplicate current input and append to output section.
     const line = node.parentNode.parentNode.parentNode.parentNode.cloneNode(true);
-    line.removeAttribute('id')
+    line.removeAttribute('id');
     line.classList.add('line');
 
     const input = line.querySelector('input.cmdline');
@@ -132,11 +130,12 @@ export class Terminal {
 
     // Parse out command, args, and trim off whitespace.
     let args;
+    let cmd;
     if (cmdline && cmdline.trim()) {
       args = cmdline.split(' ').filter(function (val, i) {
         return val;
       });
-      var cmd = args[0];
+      cmd = args[0];
       args = args.splice(1); // Remove cmd from arg list.
     }
 
@@ -148,8 +147,9 @@ export class Terminal {
         .onWrite((html: string) => {
           this.write(html);
         });
-      
-      this.exec(cmd, args, stream);
+      if (this.exec !== null) {
+        this.exec(cmd, args, stream);
+      }
     }
   }
 
@@ -168,19 +168,17 @@ export class Terminal {
     if (this.history.length && (e.keyCode === 38 || e.keyCode === 40)) {
       if (this.history[this.histpos]) {
         this.history[this.histpos] = node.value;
-      }
-      else {
+      } else {
         this.histtemp = node.value;
       }
 
-      if (e.keyCode == 38) {
+      if (e.keyCode === 38) {
         // Up arrow key.
         this.histpos--;
         if (this.histpos < 0) {
           this.histpos = 0;
         }
-      }
-      else if (e.keyCode == 40) {
+      } else if (e.keyCode === 40) {
         // Down arrow key.
         this.histpos++;
         if (this.histpos > this.history.length) {
@@ -200,29 +198,59 @@ export class Terminal {
     this.cmdLine.scrollIntoView();
   }
 
-  clear(node) {
-    this.output.innerHTML = '';
-    this.cmdLine.value = '';
-    this.background.style.minHeight = '';
+  openIn(container: HTMLElement): Terminal {
+    if (!container) {
+      throw new Error('Given container is undefined');
+    }
+    this.container = container;
+    this.setupTerminal();
+    return this;
   }
 
-  setTheme(theme: string) {
-    this.container.classList.remove(`terminal-${this.options.theme}`);
-    this.options.theme = theme;
-    this.container.classList.add(`terminal-${this.options.theme}`);
+  onCommand(exec: (cmd: string, args: string[], stream: Stream) => any): Terminal {
+    this.exec = exec;
+    return this;
   }
 
-  getTheme(): string {
+  close() {
+    if (this.container) {
+      this.container.classList.remove('terminal');
+      this.container.classList.remove(`terminal-${this.options.theme}`);
+      this.termContainer.remove();
+    }
+  }
+
+  clear(node: HTMLElement) {
+    if (this.container) {
+      this.output.innerHTML = '';
+      this.cmdLine.value = '';
+      this.background.style.minHeight = '';
+    }
+  }
+
+  set theme(theme: string) {
+    if (this.container) {
+      this.container.classList.remove(`terminal-${this.options.theme}`);
+      this.options.theme = theme;
+      this.container.classList.add(`terminal-${this.options.theme}`);
+    }
+  }
+
+  get theme(): string {
     return this.options.theme;
   }
 
-  setPrompt(prompt: string) {
-    this.prompt.innerHTML = prompt + this.options.separator;
+  set prompt(prompt: string) {
+    if (this.container) {
+      this._prompt.innerHTML = prompt + this.options.separator;
+    }
   }
 
-  getPromt(): string {
-    return this.prompt.innerHTML.replace(new RegExp(this.options.separator + '$'), '');
+  get prompt(): string {
+    if (this.container) {
+      return this._prompt.innerHTML.replace(new RegExp(this.options.separator + '$'), '');
+    }
   }
 }
 
-export { Stream, Options }
+export { Stream, Options };
