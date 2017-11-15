@@ -142,6 +142,11 @@ write(html: string): void
 Prints the given text (can be html style) into the terminal.
 If you closed the stream you can't write into the terminal anymore.
 
+#### close
+```TypeScript
+close(): void
+```
+Closes the stream. After this a new prompt appears.
 
 ### **interface Options**
 ```TypeScript
@@ -163,12 +168,6 @@ Separator between prompt and input.
 theme: string
 ```
 Name of theme.
-
-#### close
-```TypeScript
-close(): void
-```
-Closes the stream. After this a new prompt appears.
 
 ## License
 Copyright 2017 Daniel Däschle
