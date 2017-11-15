@@ -224,3 +224,5 @@ export class Terminal {
     return this.prompt.innerHTML.replace(new RegExp(this.options.separator + '$'), '');
   }
 }
+
+export { Stream, Options }
