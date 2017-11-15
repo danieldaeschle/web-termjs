@@ -208,7 +208,7 @@ export class Terminal {
     this.background.style.minHeight = '';
   }
 
-  setTheme(theme) {
+  setTheme(theme: string) {
     this.container.classList.remove(`terminal-${this.options.theme}`);
     this.options.theme = theme;
     this.container.classList.add(`terminal-${this.options.theme}`);
@@ -218,7 +218,7 @@ export class Terminal {
     return this.options.theme;
   }
 
-  setPrompt(prompt) {
+  setPrompt(prompt: string) {
     this.prompt.innerHTML = prompt + this.options.separator;
   }
 
