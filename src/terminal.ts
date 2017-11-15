@@ -22,7 +22,6 @@ export class Terminal {
       separator: '$',
       theme: 'dark'
   }) {
-    console.log(Storage);  
     this.history = window.localStorage.getItem('history') ? JSON.parse(window.localStorage.getItem('history')) : [];
     this.histpos = this.history.length;
 
