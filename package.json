@@ -1,5 +1,5 @@
 {
-  "name": "web-term",
+  "name": "web-termjs",
   "description": "Terminal emulator for browsers",
   "version": "1.0.0",
   "main": "index.js",
