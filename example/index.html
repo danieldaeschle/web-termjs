@@ -17,19 +17,22 @@
   <div id="terminal"></div>
   <script>
     var container = document.getElementById('terminal');
-    var term = new terminal.Terminal(container, cmds, {
-      welcome: 'Hi! :D',
-      prompt: '',
-      separator: '$',
-      theme: 'dark'
-    });
+    var term = new terminal.Terminal({
+        welcome: 'Hi! :D',
+        prompt: '',
+        separator: '$',
+        theme: 'dark'
+      })
+      .openIn(container)
+      .onCommand(cmds);
 
     function cmds(cmd, args, stream) {
       if (cmd === 'test') {
         stream.write('succeed');
         stream.close();
-      } else if (cmd === 'clear') {
-        term.clear();
+      } else if (cmd === 'exit()') {
+        stream.close();
+        term.close();
       } else {
         stream.write(cmd + ' : Command Not Found');
         stream.close();
