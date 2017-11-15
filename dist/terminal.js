@@ -93,7 +93,6 @@ var Terminal = /** @class */ (function () {
         this.exec = exec;
         this.options = options;
         this.histtemp = '';
-        console.log(Storage);
         this.history = window.localStorage.getItem('history') ? JSON.parse(window.localStorage.getItem('history')) : [];
         this.histpos = this.history.length;
         this.setupTerminal();
@@ -102,7 +101,7 @@ var Terminal = /** @class */ (function () {
         var _this = this;
         this.container.classList.add('terminal');
         this.container.classList.add("terminal-" + this.options.theme);
-        this.container.insertAdjacentHTML('beforeend', "\n            <div class=\"background\">\n                <div class=\"interlace\"></div>\n            </div>\n            <div class=\"term-container\">\n                <output></output>\n                <table class=\"input-line\">\n                    <tr>\n                        <td nowrap>\n                            <div class=\"prompt\">" + this.options.prompt + this.options.separator + "</div>\n                        </td>\n                        <td width=\"100%\">\n                            <input class=\"cmdline\" autofocus spellcheck=\"false\" />\n                        </td>\n                    </tr>\n                </table>\n            </div>\n        ");
+        this.container.insertAdjacentHTML('beforeend', "\n            <div class=\"background\">\n              <div class=\"term-container\">\n                <output></output>\n                <table class=\"input-line\">\n                    <tr>\n                        <td nowrap>\n                            <div class=\"prompt\">" + this.options.prompt + this.options.separator + "</div>\n                        </td>\n                        <td width=\"100%\">\n                            <input class=\"cmdline\" autofocus spellcheck=\"false\" />\n                        </td>\n                    </tr>\n                </table>\n              </div>\n            </div>\n        ");
         this.termContainer = this.container.querySelector('.term-container');
         this.inputLine = this.termContainer.querySelector('.input-line');
         this.cmdLine = this.termContainer.querySelector('.input-line .cmdline');

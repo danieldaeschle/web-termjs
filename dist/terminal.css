@@ -1,1 +1,97 @@
-html,body{margin:0;height:100%}.terminal ::selection{background:#0080ff;text-shadow:none !important}.terminal{min-height:100%;position:relative;width:100%}.terminal .term-container{padding:0.1em;position:relative;text-shadow:0 0 5px #C8C8C8}.terminal .term-container output{clear:both;width:100%}.terminal .term-container output pre{margin:0}.terminal .cmdline{background-color:transparent;border:none;color:inherit;font:inherit;margin:0;outline:none;width:100%}.terminal .hidden{display:none}.terminal output table.input-line td:last-child{padding-left:1px}.terminal .prompt{line-height:20px;margin-right:7px;white-space:nowrap}.terminal table.input-line{border-collapse:collapse;border-spacing:0;margin:0;padding:0;width:100%}.terminal table.input-line td{margin:0;padding:0}.terminal .background{height:100%;left:0;pointer-events:none;position:absolute;top:0;width:100%}.terminal-dark{color:white;font-family:monospace}.terminal-dark a{color:#fff}.terminal-dark a.external{background:dataurl("external.png") no-repeat scroll right center transparent;padding-right:13px;outline:none}.terminal-dark .background{background:#000}.terminal-dark .background .interlace{display:none}.terminal-dark .term-container{text-shadow:none}.terminal-dark .term-container output pre{color:white;font-family:monospace}.terminal-dark .prompt{color:#fc0}.terminal-light{color:black;font-family:monospace}.terminal-light a{color:#000}.terminal-light .background{background:#fff}.terminal-light .background .interlace{display:none}.terminal-light .term-container{text-shadow:none}.terminal-light .term-container output pre{color:black;font-family:monospace}.terminal-light .prompt{color:#02f}
+html, body {
+  margin: 0;
+  height: 100%; }
+
+.terminal ::selection {
+  background: #0080ff;
+  text-shadow: none !important; }
+
+.terminal {
+  min-height: 100%;
+  position: relative;
+  width: 100%; }
+
+.terminal .background .term-container {
+  padding: 0.1em;
+  position: relative;
+  text-shadow: 0 0 5px #C8C8C8; }
+
+.terminal .background .term-container output {
+  clear: both;
+  width: 100%; }
+
+.terminal .background .term-container output pre {
+  margin: 0; }
+
+.terminal .cmdline {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  margin: 0;
+  outline: none;
+  width: 100%; }
+
+.terminal .hidden {
+  display: none; }
+
+.terminal output table.input-line td:last-child {
+  padding-left: 1px; }
+
+.terminal .prompt {
+  line-height: 20px;
+  margin-right: 7px;
+  white-space: nowrap; }
+
+.terminal table.input-line {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%; }
+
+.terminal table.input-line td {
+  margin: 0;
+  padding: 0; }
+
+.terminal .background {
+  height: 100%;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 100%; }
+
+/* Dark theme */
+.terminal-dark {
+  color: white;
+  font-family: monospace; }
+
+.terminal-dark a {
+  color: #fff; }
+
+.terminal-dark .background {
+  background: #000; }
+
+.terminal-dark .background .term-container {
+  text-shadow: none; }
+
+.terminal-dark .prompt {
+  color: #fc0; }
+
+/* Light theme */
+.terminal-light {
+  color: black;
+  font-family: monospace; }
+
+.terminal-light a {
+  color: #000; }
+
+.terminal-light .background {
+  background: #fff; }
+
+.terminal-light .background .term-container {
+  text-shadow: none; }
+
+.terminal-light .prompt {
+  color: #02f; }

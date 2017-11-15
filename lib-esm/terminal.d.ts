@@ -19,8 +19,8 @@ export declare class Terminal {
     private historyHandler(e, node);
     private write(html);
     clear(node: any): void;
-    setTheme(theme: any): void;
+    setTheme(theme: string): void;
     getTheme(): string;
-    setPrompt(prompt: any): void;
+    setPrompt(prompt: string): void;
     getPromt(): string;
 }

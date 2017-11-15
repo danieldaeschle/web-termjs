@@ -15,7 +15,7 @@ export class Terminal {
 
   constructor(
     private container: HTMLElement,
-    private exec: Function,
+    private exec: (cmd: string, args: string[], stream: Stream) => any,
     private options: Options = {
       welcome: '',
       prompt: '',
