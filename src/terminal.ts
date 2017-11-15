@@ -2,7 +2,7 @@ import { Options } from './options';
 import { Stream } from './stream';
 
 export class Terminal {
-  container: HTMLElement;
+  private _container: HTMLElement;
   private history: any[];
   private histpos: number;
   private histtemp = '';
@@ -202,7 +202,7 @@ export class Terminal {
     if (!container) {
       throw new Error('Given container is undefined');
     }
-    this.container = container;
+    this._container = container;
     this.setupTerminal();
     return this;
   }
@@ -250,6 +250,10 @@ export class Terminal {
     if (this.container) {
       return this._prompt.innerHTML.replace(new RegExp(this.options.separator + '$'), '');
     }
+  }
+
+  get container(): HTMLElement {
+    return this._container;
   }
 }
 
