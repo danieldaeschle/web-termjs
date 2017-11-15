@@ -167,4 +167,5 @@ var Terminal = /** @class */ (function () {
     return Terminal;
 }());
 export { Terminal };
+export { Stream };
 //# sourceMappingURL=terminal.js.map

@@ -81,6 +81,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var stream_1 = __webpack_require__(1);
+exports.Stream = stream_1.Stream;
 var Terminal = /** @class */ (function () {
     function Terminal(container, exec, options) {
         if (options === void 0) { options = {

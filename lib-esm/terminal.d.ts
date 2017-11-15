@@ -1,4 +1,5 @@
 import { Options } from './options';
+import { Stream } from './stream';
 export declare class Terminal {
     private container;
     private exec;
@@ -12,7 +13,7 @@ export declare class Terminal {
     private output;
     private prompt;
     private background;
-    constructor(container: HTMLElement, exec: Function, options?: Options);
+    constructor(container: HTMLElement, exec: (cmd: string, args: string[], stream: Stream) => any, options?: Options);
     private setupTerminal();
     private processNewCommand(self, e, node);
     private inputTextClick(e, node);
@@ -24,3 +25,4 @@ export declare class Terminal {
     setPrompt(prompt: string): void;
     getPromt(): string;
 }
+export { Stream, Options };
