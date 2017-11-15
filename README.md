@@ -1,6 +1,9 @@
 # web-termjs
-**Terminal emulator for browsers**<br>
+**Terminal emulator for browsers**
+
 This repository got inspired by [SDA/terminal](https://github.com/SDA/terminal)
+
+[Live Demo](https://danieldaeschle.github.io/web-termjs/)
 
 ## Quickstart
 
