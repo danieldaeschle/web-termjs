@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Terminal</title>
+  <link rel="stylesheet" media="all" href="https://raw.githubusercontent.com/danieldaeschle/web-termjs/master/dist/terminal.min.css">
+  <script src="https://raw.githubusercontent.com/danieldaeschle/web-termjs/master/dist/terminal.min.js"></script>
+  <style>
+    #terminal * {
+      font-size: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="terminal"></div>
+  <script>
+    const container = document.getElementById('terminal');
+    const term = new terminal.Terminal({
+        welcome: 'Example has been loaded...<br><br>Try "ping" for a async example :)<br><br>',
+        prompt: '',
+        separator: '$',
+        theme: 'dark'
+      })
+      .openIn(container)
+      .onCommand(cmds);
+
+    function cmds(cmd, args, stream) {
+      if (cmd === 'test') {
+        stream.write('Succeed!');
+        stream.close();
+      } else if (cmd === 'ping') {
+        let count = 5;
+        const i = setInterval(() => {
+          if (count === 0) {
+            clearInterval(i);
+            stream.close();
+          }
+          stream.write('Response from 127.0.0.1: Bytes=32 Time<1ms TTL=128<br>');
+          count--;
+        }, 1 * 1000);
+      } else {
+        stream.write(cmd + ' : Command Not Found');
+        stream.close();
+      }
+    }
+  </script>
+</body>
+
+</html>
