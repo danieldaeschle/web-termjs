@@ -22,12 +22,14 @@ Add a container which will hold the terminal like this:
 Add another script after the `terminal.min.js` (in `<script>` tags or in a extra file) and add following example:
 ```JavaScript
 var container = document.getElementById('terminal');
-var term = new terminal.Terminal(container, commands, {
-    welcome: 'Hi! :D',
-    prompt: '',
-    separator: '$',
-    theme: 'dark'
-});
+var term = new terminal.Terminal({
+        welcome: 'Hi! :D',
+        prompt: '',
+        separator: '$',
+        theme: 'dark'
+    })
+    .openIn(container)
+    .onCommand(commands);
 
 function commands(cmd, args, stream) {
     if (cmd === 'test') {
@@ -40,7 +42,69 @@ function commands(cmd, args, stream) {
 **Or just run the `index.html` in example folder.**
 
 ### **NodeJS**
-Coming soon.
+
+Download the package from NPM.
+```
+npm install --save web-termjs
+```
+Then import it and create the terminal.
+
+#### **JavaScript**
+```JavaScript
+const Terminal = require('web-termjs').Terminal;
+
+const term = new Terminal()
+    .openIn(...)
+    .onCommand(...);
+```
+
+#### **TypeScript**
+```TypeScript
+import { Terminal } from 'web-termjs';
+
+const term: Terminal = new Terminal()
+    .openIn(...)
+    .onCommand(...);
+```
+
+#### **Angular 5 Example**
+##### app.component.html
+```HTML
+<div #terminal></div>
+```
+
+##### app.component.ts
+```TypeScript
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Terminal, Stream } from 'web-termjs';
+import { Options } from 'web-termjs/lib/options';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements AfterViewInit {
+  @ViewChild('terminal') terminal: ElementRef;
+  term: Terminal;
+
+  ngAfterViewInit() {
+    const options: Options = {
+      welcome: 'Hello!',
+      prompt: '',
+      separator: '>',
+      theme: 'light'
+    };
+    this.term = new Terminal(this.terminal.nativeElement, this.onCommand, options);
+  }
+
+  onCommand(cmd: string, args: string[], stream: Stream) {
+    stream.write('Ok!');
+    stream.close();
+  }
+}
+
+```
 
 ## Custom Themes
 Create a CSS file with following content which you can specify (with examples):
@@ -88,11 +152,7 @@ term.setTheme('custom-name');
 ### **class Terminal**
 #### constructor
 ```TypeScript
-constructor(
-    container: HTMLElement,
-    exec: (cmd: string, args: string[], stream: Stream) => any,
-    options: Options
-)
+constructor(options: Options)
 ```
 `options` has a default value:
 ```TypeScript
@@ -104,35 +164,47 @@ constructor(
 }
 ```
 
+#### theme
+```TypeScript
+theme: string
+```
+Getter and setter of the theme
+
+#### prompt
+```TypeScript
+prompt: string
+```
+Getter and setter of the prompt
+
+#### container
+```TypeScript
+container: HTMLElement
+```
+Getter of the container
+
 #### clear
 ```TypeScript
-clean(): void
+clear(): void
 ```
 Clears the screen.
 
-#### setTheme
+#### close
 ```TypeScript
-setTheme(theme: string): void
+close(): void
 ```
-Changes the theme.
+Removes the terminal from the website.
 
-#### getTheme
+#### openIn
 ```TypeScript
-getTheme(): string
+openIn(container: HTMLElement): Terminal
 ```
-Returns the current theme.
+Sets the container by the given parameter and starts it.
 
-#### setPrompt
+#### onCommand
 ```TypeScript
-setPrompt(prompt: string): void
+onCommand(exec: (cmd: string, args: string[], stream: Stream) => any): Terminal
 ```
-Changes the prompt.
-
-#### getPrompt
-```TypeScript
-getPrompt(): string
-```
-Returns the current prompt.
+Sets the function which will be called when a command has entered.
 
 ### **class Stream**
 #### write
