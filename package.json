@@ -23,7 +23,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "node node_modules/shx/lib/cli.js rm -rf _bundles lib lib-esm",
-    "build:sass": "node node_modules/node-sass/bin/node-sass --output-style compressed src/terminal.scss > dist/terminal.css",
+    "build:sass": "node node_modules/node-sass/bin/node-sass --output-style compressed src/terminal.scss > dist/terminal.min.css && node node_modules/node-sass/bin/node-sass src/terminal.scss > dist/terminal.css",
     "build:ts": "tsc && tsc -m es6 --outDir lib-esm && webpack",
     "build": "npm run clean && npm run build:ts && npm run build:sass"
   },
