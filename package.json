@@ -24,8 +24,8 @@
   "scripts": {
     "clean": "node node_modules/shx/lib/cli.js rm -rf _bundles lib lib-esm",
     "build:sass": "node node_modules/node-sass/bin/node-sass --output-style compressed src/terminal.scss > dist/terminal.css",
-    "build:tsc": "tsc && tsc -m es6 --outDir lib-esm && webpack",
-    "build": "npm run clean && npm run build:tsc && npm run build:sass"
+    "build:ts": "tsc && tsc -m es6 --outDir lib-esm && webpack",
+    "build": "npm run clean && npm run build:ts && npm run build:sass"
   },
   "directories": {
     "src": "src"
