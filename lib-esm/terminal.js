@@ -1,19 +1,16 @@
 import { Stream } from './stream';
 var Terminal = /** @class */ (function () {
-    function Terminal(container, exec, options) {
+    function Terminal(options) {
         if (options === void 0) { options = {
             welcome: '',
             prompt: '',
             separator: '$',
             theme: 'dark'
         }; }
-        this.container = container;
-        this.exec = exec;
         this.options = options;
         this.histtemp = '';
         this.history = window.localStorage.getItem('history') ? JSON.parse(window.localStorage.getItem('history')) : [];
         this.histpos = this.history.length;
-        this.setupTerminal();
     }
     Terminal.prototype.setupTerminal = function () {
         var _this = this;
@@ -24,7 +21,7 @@ var Terminal = /** @class */ (function () {
         this.inputLine = this.termContainer.querySelector('.input-line');
         this.cmdLine = this.termContainer.querySelector('.input-line .cmdline');
         this.output = this.termContainer.querySelector('output');
-        this.prompt = this.termContainer.querySelector('.prompt');
+        this._prompt = this.termContainer.querySelector('.prompt');
         this.background = document.querySelector('.background');
         this.output.addEventListener('DOMSubtreeModified', function (e) {
             setTimeout(function () {
@@ -62,8 +59,9 @@ var Terminal = /** @class */ (function () {
     Terminal.prototype.processNewCommand = function (self, e, node) {
         var _this = this;
         // Only handle the Enter key.
-        if (e.keyCode !== 13)
+        if (e.keyCode !== 13) {
             return;
+        }
         var cmdline = node.value;
         // Save shell history.
         if (cmdline) {
@@ -87,11 +85,12 @@ var Terminal = /** @class */ (function () {
         node.value = '';
         // Parse out command, args, and trim off whitespace.
         var args;
+        var cmd;
         if (cmdline && cmdline.trim()) {
             args = cmdline.split(' ').filter(function (val, i) {
                 return val;
             });
-            var cmd = args[0];
+            cmd = args[0];
             args = args.splice(1); // Remove cmd from arg list.
         }
         if (cmd) {
@@ -102,7 +101,9 @@ var Terminal = /** @class */ (function () {
                 .onWrite(function (html) {
                 _this.write(html);
             });
-            this.exec(cmd, args, stream);
+            if (this.exec !== null) {
+                this.exec(cmd, args, stream);
+            }
         }
     };
     Terminal.prototype.inputTextClick = function (e, node) {
@@ -122,14 +123,14 @@ var Terminal = /** @class */ (function () {
             else {
                 this.histtemp = node.value;
             }
-            if (e.keyCode == 38) {
+            if (e.keyCode === 38) {
                 // Up arrow key.
                 this.histpos--;
                 if (this.histpos < 0) {
                     this.histpos = 0;
                 }
             }
-            else if (e.keyCode == 40) {
+            else if (e.keyCode === 40) {
                 // Down arrow key.
                 this.histpos++;
                 if (this.histpos > this.history.length) {
@@ -145,25 +146,60 @@ var Terminal = /** @class */ (function () {
         this.output.insertAdjacentHTML('beforeend', html);
         this.cmdLine.scrollIntoView();
     };
+    Terminal.prototype.openIn = function (container) {
+        if (!container) {
+            throw new Error('Given container is undefined');
+        }
+        this.container = container;
+        this.setupTerminal();
+        return this;
+    };
+    Terminal.prototype.onCommand = function (exec) {
+        this.exec = exec;
+        return this;
+    };
+    Terminal.prototype.close = function () {
+        if (this.container) {
+            this.container.classList.remove('terminal');
+            this.container.classList.remove("terminal-" + this.options.theme);
+            this.termContainer.remove();
+        }
+    };
     Terminal.prototype.clear = function (node) {
-        this.output.innerHTML = '';
-        this.cmdLine.value = '';
-        this.background.style.minHeight = '';
+        if (this.container) {
+            this.output.innerHTML = '';
+            this.cmdLine.value = '';
+            this.background.style.minHeight = '';
+        }
     };
-    Terminal.prototype.setTheme = function (theme) {
-        this.container.classList.remove("terminal-" + this.options.theme);
-        this.options.theme = theme;
-        this.container.classList.add("terminal-" + this.options.theme);
-    };
-    Terminal.prototype.getTheme = function () {
-        return this.options.theme;
-    };
-    Terminal.prototype.setPrompt = function (prompt) {
-        this.prompt.innerHTML = prompt + this.options.separator;
-    };
-    Terminal.prototype.getPromt = function () {
-        return this.prompt.innerHTML.replace(new RegExp(this.options.separator + '$'), '');
-    };
+    Object.defineProperty(Terminal.prototype, "theme", {
+        get: function () {
+            return this.options.theme;
+        },
+        set: function (theme) {
+            if (this.container) {
+                this.container.classList.remove("terminal-" + this.options.theme);
+                this.options.theme = theme;
+                this.container.classList.add("terminal-" + this.options.theme);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Terminal.prototype, "prompt", {
+        get: function () {
+            if (this.container) {
+                return this._prompt.innerHTML.replace(new RegExp(this.options.separator + '$'), '');
+            }
+        },
+        set: function (prompt) {
+            if (this.container) {
+                this._prompt.innerHTML = prompt + this.options.separator;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Terminal;
 }());
 export { Terminal };

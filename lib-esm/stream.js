@@ -3,8 +3,9 @@ var Stream = /** @class */ (function () {
         this.closed = false;
     }
     Stream.prototype.write = function (html) {
-        if (this.closed)
+        if (this.closed) {
             return;
+        }
         this._write(html);
     };
     Stream.prototype.close = function () {
