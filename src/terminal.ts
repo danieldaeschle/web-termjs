@@ -33,9 +33,7 @@ export class Terminal {
     this.container.classList.add(`terminal-${this.options.theme}`);
     this.container.insertAdjacentHTML('beforeend', `
             <div class="background">
-                <div class="interlace"></div>
-            </div>
-            <div class="term-container">
+              <div class="term-container">
                 <output></output>
                 <table class="input-line">
                     <tr>
@@ -47,6 +45,7 @@ export class Terminal {
                         </td>
                     </tr>
                 </table>
+              </div>
             </div>
         `);
 
