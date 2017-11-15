@@ -2,7 +2,7 @@ import { Options } from './options';
 import { Stream } from './stream';
 export declare class Terminal {
     private options;
-    container: HTMLElement;
+    private _container;
     private history;
     private histpos;
     private histtemp;
@@ -22,8 +22,9 @@ export declare class Terminal {
     openIn(container: HTMLElement): Terminal;
     onCommand(exec: (cmd: string, args: string[], stream: Stream) => any): Terminal;
     close(): void;
-    clear(node: any): void;
+    clear(node: HTMLElement): void;
     theme: string;
     prompt: string;
+    readonly container: HTMLElement;
 }
 export { Stream, Options };

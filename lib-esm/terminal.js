@@ -150,7 +150,7 @@ var Terminal = /** @class */ (function () {
         if (!container) {
             throw new Error('Given container is undefined');
         }
-        this.container = container;
+        this._container = container;
         this.setupTerminal();
         return this;
     };
@@ -196,6 +196,13 @@ var Terminal = /** @class */ (function () {
             if (this.container) {
                 this._prompt.innerHTML = prompt + this.options.separator;
             }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Terminal.prototype, "container", {
+        get: function () {
+            return this._container;
         },
         enumerable: true,
         configurable: true

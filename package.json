@@ -1,7 +1,7 @@
 {
   "name": "web-termjs",
   "description": "Terminal emulator for browsers",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "./lib/terminal.js",
   "types": "./lib/terminal.d.ts",
   "author": {
