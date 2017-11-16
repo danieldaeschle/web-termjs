@@ -3,9 +3,12 @@
 **/webpack.config.js
 **/packages-lock.json
 **/tslint.json
+**/jasmine.json
+**/karma.conf.js
 
 src
 node_modules
 example
 npm-debug.log
 docs
+spec
