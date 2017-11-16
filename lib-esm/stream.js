@@ -1,16 +1,23 @@
 var Stream = /** @class */ (function () {
     function Stream() {
-        this.closed = false;
+        this._closed = false;
     }
     Stream.prototype.write = function (html) {
-        if (this.closed) {
+        if (this._closed) {
             return;
         }
-        this._write(html);
+        if (this._write) {
+            this._write(html);
+        }
     };
     Stream.prototype.close = function () {
-        this._close();
-        this.closed = true;
+        if (this._close) {
+            this._close();
+        }
+        this._closed = true;
+    };
+    Stream.prototype.isClosed = function () {
+        return this._closed;
     };
     Stream.prototype.onWrite = function (callback) {
         this._write = callback;

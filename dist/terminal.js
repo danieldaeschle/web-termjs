@@ -105,7 +105,7 @@ var Terminal = /** @class */ (function () {
         this.cmdLine = this.termContainer.querySelector('.input-line .cmdline');
         this.output = this.termContainer.querySelector('output');
         this._prompt = this.termContainer.querySelector('.prompt');
-        this.background = document.querySelector('.background');
+        this.background = this.container.querySelector('.background');
         this.output.addEventListener('DOMSubtreeModified', function (e) {
             setTimeout(function () {
                 _this.cmdLine.scrollIntoView();
@@ -238,6 +238,9 @@ var Terminal = /** @class */ (function () {
         return this;
     };
     Terminal.prototype.onCommand = function (exec) {
+        if (!exec) {
+            throw new Error('Callback function must be provided!');
+        }
         this.exec = exec;
         return this;
     };
@@ -248,7 +251,7 @@ var Terminal = /** @class */ (function () {
             this.termContainer.remove();
         }
     };
-    Terminal.prototype.clear = function (node) {
+    Terminal.prototype.clear = function () {
         if (this.container) {
             this.output.innerHTML = '';
             this.cmdLine.value = '';
@@ -265,19 +268,24 @@ var Terminal = /** @class */ (function () {
                 this.options.theme = theme;
                 this.container.classList.add("terminal-" + this.options.theme);
             }
+            else {
+                this.options.theme = theme;
+            }
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(Terminal.prototype, "prompt", {
         get: function () {
-            if (this.container) {
-                return this._prompt.innerHTML.replace(new RegExp(this.options.separator + '$'), '');
-            }
+            return this.options.prompt;
         },
         set: function (prompt) {
             if (this.container) {
+                this.options.prompt = prompt;
                 this._prompt.innerHTML = prompt + this.options.separator;
+            }
+            else {
+                this.options.prompt = prompt;
             }
         },
         enumerable: true,
@@ -304,17 +312,24 @@ exports.Terminal = Terminal;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Stream = /** @class */ (function () {
     function Stream() {
-        this.closed = false;
+        this._closed = false;
     }
     Stream.prototype.write = function (html) {
-        if (this.closed) {
+        if (this._closed) {
             return;
         }
-        this._write(html);
+        if (this._write) {
+            this._write(html);
+        }
     };
     Stream.prototype.close = function () {
-        this._close();
-        this.closed = true;
+        if (this._close) {
+            this._close();
+        }
+        this._closed = true;
+    };
+    Stream.prototype.isClosed = function () {
+        return this._closed;
     };
     Stream.prototype.onWrite = function (callback) {
         this._write = callback;

@@ -22,7 +22,7 @@ export declare class Terminal {
     openIn(container: HTMLElement): Terminal;
     onCommand(exec: (cmd: string, args: string[], stream: Stream) => any): Terminal;
     close(): void;
-    clear(node: HTMLElement): void;
+    clear(): void;
     theme: string;
     prompt: string;
     readonly container: HTMLElement;
